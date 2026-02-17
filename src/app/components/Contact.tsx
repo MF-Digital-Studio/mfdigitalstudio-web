@@ -1,102 +1,73 @@
-import { motion } from "motion/react";
-import { useState } from "react";
-import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { motion } from 'motion/react';
+import { useState } from 'react';
+import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
-    website: "" // honeypot
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) newErrors.name = "Ad Soyad gereklidir";
-
-    if (!formData.email.trim()) {
-      newErrors.email = "E-posta gereklidir";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Geçerli bir e-posta adresi giriniz";
+    if (!formData.name.trim()) {
+      newErrors.name = 'Ad Soyad gereklidir';
     }
 
-    if (!formData.phone.trim()) newErrors.phone = "Telefon numarası gereklidir";
-    if (!formData.service) newErrors.service = "Lütfen bir hizmet seçiniz";
-    if (!formData.message.trim()) newErrors.message = "Mesajınızı yazınız";
+    if (!formData.email.trim()) {
+      newErrors.email = 'E-posta gereklidir';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Geçerli bir e-posta adresi giriniz';
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Telefon numarası gereklidir';
+    }
+
+    if (!formData.service) {
+      newErrors.service = 'Lütfen bir hizmet seçiniz';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Mesajınızı yazınız';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
-
-    try {
-      setIsSending(true);
-
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || "Gönderim başarısız");
-      }
-
+    if (validateForm()) {
       setIsSubmitted(true);
-
+      // Form gönderimi simülasyonu
       setTimeout(() => {
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          service: "",
-          message: "",
-          website: ""
-        });
+        setFormData({ name: '', email: '', phone: '', service: '', message: '' });
         setIsSubmitted(false);
       }, 3000);
-
-    } catch (err) {
-      setErrors(prev => ({
-        ...prev,
-        submit: "Gönderim sırasında hata oluştu. Lütfen tekrar deneyin."
-      }));
-    } finally {
-      setIsSending(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-
+    // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
   return (
     <section id="iletisim" className="py-24 relative">
       <div className="container mx-auto px-6">
-
-        {/* Başlık */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -132,74 +103,160 @@ export function Contact() {
               </p>
             </motion.div>
           ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl"
-            >
-              {errors.submit && (
-                <p className="text-red-400 text-sm mb-4">{errors.submit}</p>
-              )}
-
-              {/* Honeypot */}
-              <input
-                type="text"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                className="hidden"
-                autoComplete="off"
-              />
-
-              {/* GRID KISMI AYNEN KORUNDU */}
+            <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Ad Soyad <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
+                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.name
+                      ? 'border-red-500 focus:ring-red-500/50'
+                      : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
+                      }`}
+                    placeholder="Adınız Soyadınız"
                   />
+                  {errors.name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                    >
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.name}
+                    </motion.p>
+                  )}
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
                     E-posta <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
+                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.email
+                      ? 'border-red-500 focus:ring-red-500/50'
+                      : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
+                      }`}
+                    placeholder="mail@example.com"
                   />
+                  {errors.email && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                    >
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.email}
+                    </motion.p>
+                  )}
                 </div>
               </div>
 
-              {/* Diğer alanlar tasarım korunarak devam ediyor */}
-              {/* ... aynı yapıda devam ... */}
+              <div className="mb-6">
+                <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                  Telefon <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.phone
+                    ? 'border-red-500 focus:ring-red-500/50'
+                    : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
+                    }`}
+                  placeholder="+90 (5xx) xxx xx xx"
+                />
+                {errors.phone && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.phone}
+                  </motion.p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="service" className="block text-sm font-medium mb-2">
+                  Hizmet Seçimi <span className="text-red-400">*</span>
+                </label>
+                <select
+                  id="service"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
+                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 transition-all ${errors.service
+                    ? 'border-red-500 focus:ring-red-500/50'
+                    : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
+                    } ${!formData.service ? 'text-gray-500' : ''}`}
+                >
+                  <option value="" className="bg-[#0a0e1a]">Hizmet Seçiniz</option>
+                  <option value="web-design" className="bg-[#0a0e1a] text-white">Web Tasarım</option>
+                  <option value="web-development" className="bg-[#0a0e1a] text-white">Web Geliştirme</option>
+                  <option value="ecommerce" className="bg-[#0a0e1a] text-white">E-Ticaret</option>
+                  <option value="seo" className="bg-[#0a0e1a] text-white">SEO & Optimizasyon</option>
+                </select>
+                {errors.service && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.service}
+                  </motion.p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                  Mesajınız <span className="text-red-400">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={5}
+                  className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all resize-none ${errors.message
+                    ? 'border-red-500 focus:ring-red-500/50'
+                    : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
+                    }`}
+                  placeholder="Projeniz hakkında bize bilgi verin..."
+                ></textarea>
+                {errors.message && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-xs mt-1 flex items-center gap-1"
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    {errors.message}
+                  </motion.p>
+                )}
+              </div>
 
               <motion.button
                 type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                disabled={isSending}
                 className="w-full bg-linear-to-r cursor-pointer from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group"
               >
-                {isSending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Gönderiliyor...
-                  </>
-                ) : (
-                  <>
-                    <span>Gönder</span>
-                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
+                <span>Gönder</span>
+                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </form>
           )}
