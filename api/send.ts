@@ -1,9 +1,14 @@
 import { Resend } from 'resend';
 
+// BU SATIR ÇOK ÖNEMLİ: Vercel'e modern (Edge) motoru kullanmasını söylüyoruz
+export const config = {
+    runtime: 'edge',
+};
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(request: Request) {
-    // CORS ayarları (Tarayıcıdan gelen isteği kabul etmek için)
+    // CORS ayarları
     if (request.method === 'OPTIONS') {
         return new Response(null, {
             status: 200,
@@ -26,6 +31,7 @@ export default async function handler(request: Request) {
         const body = await request.json();
         const { name, email, phone, service, message } = body;
 
+        // Mail gönderimi
         const { data, error } = await resend.emails.send({
             from: process.env.MAIL_FROM as string,
             to: process.env.MAIL_TO as string,
@@ -42,6 +48,7 @@ export default async function handler(request: Request) {
         });
 
         if (error) {
+            console.error("Resend Hatası:", error);
             return new Response(JSON.stringify({ error }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' },
@@ -53,6 +60,7 @@ export default async function handler(request: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
     } catch (error) {
+        console.error("Sunucu Hatası:", error);
         return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },
