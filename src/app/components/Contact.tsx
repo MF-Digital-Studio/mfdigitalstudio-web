@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { useState } from 'react';
-import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -13,7 +13,6 @@ export function Contact() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Yükleniyor durumu
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -44,47 +43,23 @@ export function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (validateForm()) {
-      setIsSubmitting(true);
-
-      try {
-        // Vercel Serverless Function'a istek atıyoruz
-        const response = await fetch('/api/send', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          setIsSubmitted(true);
-          setFormData({ name: '', email: '', phone: '', service: '', message: '' });
-
-          setTimeout(() => {
-            setIsSubmitted(false);
-          }, 3000);
-        } else {
-          console.error('Hata:', result);
-          alert('Mesaj gönderilemedi. Lütfen daha sonra tekrar deneyin.');
-        }
-      } catch (error) {
-        console.error('Bağlantı Hatası:', error);
-        alert('Sunucuyla iletişim kurulamadı.');
-      } finally {
-        setIsSubmitting(false);
-      }
+      setIsSubmitted(true);
+      // Form gönderimi simülasyonu
+      setTimeout(() => {
+        setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+        setIsSubmitted(false);
+      }, 3000);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -140,11 +115,10 @@ export function Contact() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    disabled={isSubmitting}
                     className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.name
                       ? 'border-red-500 focus:ring-red-500/50'
                       : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
-                      } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      }`}
                     placeholder="Adınız Soyadınız"
                   />
                   {errors.name && (
@@ -168,11 +142,10 @@ export function Contact() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    disabled={isSubmitting}
                     className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.email
                       ? 'border-red-500 focus:ring-red-500/50'
                       : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
-                      } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      }`}
                     placeholder="mail@example.com"
                   />
                   {errors.email && (
@@ -198,11 +171,10 @@ export function Contact() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  disabled={isSubmitting}
                   className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all ${errors.phone
                     ? 'border-red-500 focus:ring-red-500/50'
                     : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
-                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    }`}
                   placeholder="+90 (5xx) xxx xx xx"
                 />
                 {errors.phone && (
@@ -226,11 +198,10 @@ export function Contact() {
                   name="service"
                   value={formData.service}
                   onChange={handleChange}
-                  disabled={isSubmitting}
                   className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 transition-all ${errors.service
                     ? 'border-red-500 focus:ring-red-500/50'
                     : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
-                    } ${!formData.service ? 'text-gray-500' : ''} ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    } ${!formData.service ? 'text-gray-500' : ''}`}
                 >
                   <option value="" className="bg-[#0a0e1a]">Hizmet Seçiniz</option>
                   <option value="web-design" className="bg-[#0a0e1a] text-white">Web Tasarım</option>
@@ -259,12 +230,11 @@ export function Contact() {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  disabled={isSubmitting}
                   rows={5}
                   className={`w-full bg-white/5 border rounded-lg px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 transition-all resize-none ${errors.message
                     ? 'border-red-500 focus:ring-red-500/50'
                     : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
-                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    }`}
                   placeholder="Projeniz hakkında bize bilgi verin..."
                 ></textarea>
                 {errors.message && (
@@ -281,22 +251,12 @@ export function Contact() {
 
               <motion.button
                 type="submit"
-                disabled={isSubmitting}
-                whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                className={`w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-wait' : 'cursor-pointer'}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-linear-to-r cursor-pointer from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group"
               >
-                {isSubmitting ? (
-                  <>
-                    <span>Gönderiliyor...</span>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  </>
-                ) : (
-                  <>
-                    <span>Gönder</span>
-                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
+                <span>Gönder</span>
+                <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </form>
           )}
