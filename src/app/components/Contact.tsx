@@ -183,7 +183,7 @@ export function Contact() {
                     animate={{ opacity: 1, y: 0 }}
                     className="text-red-400 text-xs mt-1 flex items-center gap-1"
                   >
-                    <AlertCircle className="w-3 h-3" />git remote add origin https://github.com/MF-Digital-Studio/mfdigitalstudio-web.git
+                    <AlertCircle className="w-3 h-3" />
                     {errors.phone}
                   </motion.p>
                 )}
