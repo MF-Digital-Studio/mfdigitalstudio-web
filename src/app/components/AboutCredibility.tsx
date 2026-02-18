@@ -49,7 +49,7 @@ export function AboutCredibility() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: index * 0.08 }}
-                                    className="flex items-start gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
+                                    className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group cursor-pointer"
                                 >
                                     <div className="flex-shrink-0 p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
                                         <Code2 className="w-5 h-5 text-blue-400" />
@@ -68,7 +68,7 @@ export function AboutCredibility() {
                         transition={{ duration: 0.6 }}
                     >
                         <h3 className="text-2xl font-bold mb-6 text-purple-400">Hizmet Yaklaşımımız</h3>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 gap-3">
                             {aboutCredibility.tools.map((tool, index) => (
                                 <motion.div
                                     key={index}
@@ -100,7 +100,7 @@ export function AboutCredibility() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.4, delay: index * 0.08 }}
-                                    className="flex items-start gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group"
+                                    className="flex items-center gap-3 p-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all group"
                                 >
                                     <div className="flex-shrink-0 p-1.5 bg-pink-500/20 rounded-lg group-hover:bg-pink-500/30 transition-colors mt-0.5">
                                         <Zap className="w-4 h-4 text-pink-400" />
