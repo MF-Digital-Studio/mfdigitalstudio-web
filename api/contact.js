@@ -124,9 +124,9 @@ function serviceLabel(value) {
     const map = {
         "web-design": "Web Tasarım",
         "web-development": "Web Geliştirme",
-        ecommerce: "E-Ticaret",
+        qr: "QR Menü ve Restoran Entegrasyonu",
         seo: "SEO & Optimizasyon",
-        "qr-menu": "QR Menü",
+        other: "Diğer",
     };
     return map[value] || value;
 }

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import React, { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
@@ -31,10 +31,6 @@ export function Contact() {
       newErrors.email = 'Geçerli bir e-posta adresi giriniz';
     }
 
-    // if (!formData.phone.trim()) {
-    //   newErrors.phone = 'Telefon numarası gereklidir';
-    // }
-
     if (!formData.service) {
       newErrors.service = 'Lütfen bir hizmet seçiniz';
     }
@@ -49,7 +45,7 @@ export function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitError('');
 
@@ -67,14 +63,11 @@ export function Contact() {
         website: formData.website // honeypot (boş kalmalı)
       };
 
-      const apiBase = import.meta.env.VITE_API_URL || '';
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-
-
 
       const data = await res.json().catch(() => ({}));
 
@@ -100,7 +93,7 @@ export function Contact() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {

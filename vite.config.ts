@@ -14,7 +14,6 @@ export default defineConfig({
     },
   },
 
-  // ✅ BUNU EKLE
   server: {
     proxy: {
       '/api': 'http://localhost:8787',

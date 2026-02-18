@@ -119,10 +119,6 @@ Gönderim zamanı: ${new Date().toISOString()}
 
     try {
         const transporter = getTransporter();
-
-        // Optional: verify transporter once (can be removed after stable)
-        // await transporter.verify();
-
         await transporter.sendMail({
             from: process.env.MAIL_FROM || process.env.SMTP_USER,
             to: process.env.MAIL_TO || process.env.SMTP_USER,
