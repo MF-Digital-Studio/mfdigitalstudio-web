@@ -31,9 +31,9 @@ export function Contact() {
       newErrors.email = 'Geçerli bir e-posta adresi giriniz';
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Telefon numarası gereklidir';
-    }
+    // if (!formData.phone.trim()) {
+    //   newErrors.phone = 'Telefon numarası gereklidir';
+    // }
 
     if (!formData.service) {
       newErrors.service = 'Lütfen bir hizmet seçiniz';
@@ -253,11 +253,14 @@ export function Contact() {
                   <option value="web-development" className="bg-[#0a0e1a] text-white">
                     Web Geliştirme
                   </option>
-                  <option value="ecommerce" className="bg-[#0a0e1a] text-white">
-                    E-Ticaret
+                  <option value="qr" className="bg-[#0a0e1a] text-white">
+                    QR Menü ve Restoran Entegrasyonu
                   </option>
                   <option value="seo" className="bg-[#0a0e1a] text-white">
                     SEO & Optimizasyon
+                  </option>
+                  <option value="other" className="bg-[#0a0e1a] text-white">
+                    Diğer
                   </option>
                 </select>
                 {errors.service && (
