@@ -152,7 +152,7 @@ function buildHtmlTemplate({ fullName, email, phone, serviceText, message, subje
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="display:flex;align-items:center;gap:12px">
         <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff">
-          MF
+          <img src="../src/app/assets/logo.svg"
         </div>
         <div>
           <div style="font-size:14px;color:#9ca3af">MF Digital Studio</div>
@@ -194,7 +194,7 @@ function buildHtmlTemplate({ fullName, email, phone, serviceText, message, subje
       </div>
     </div>
 
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+    <div style="display:flex;gap:25px;flex-wrap:wrap;margin-top:10px">
       <a href="${escapeHtml(mailtoReply)}"
          style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:12px 14px;border-radius:12px;font-weight:700;font-size:14px;display:inline-block">
         Yanıtla
