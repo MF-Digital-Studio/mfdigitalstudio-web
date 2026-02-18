@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 
 export function Contact() {
@@ -8,11 +8,15 @@ export function Contact() {
     email: '',
     phone: '',
     service: '',
-    message: ''
+    message: '',
+    website: '' // honeypot (gizli)
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -37,29 +41,68 @@ export function Contact() {
 
     if (!formData.message.trim()) {
       newErrors.message = 'Mesajınızı yazınız';
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = 'Mesaj en az 10 karakter olmalıdır';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError('');
 
-    if (validateForm()) {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+
+    try {
+      const payload = {
+        fullName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        message: formData.message,
+        website: formData.website // honeypot (boş kalmalı)
+      };
+
+      const apiBase = import.meta.env.VITE_API_URL || '';
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data.ok) {
+        if (data?.error === 'VALIDATION_ERROR') {
+          setSubmitError('Lütfen alanları kontrol edip tekrar deneyin.');
+        } else {
+          setSubmitError('Şu anda gönderilemedi. Lütfen tekrar deneyin.');
+        }
+        return;
+      }
+
       setIsSubmitted(true);
-      // Form gönderimi simülasyonu
-      setTimeout(() => {
-        setFormData({ name: '', email: '', phone: '', service: '', message: '' });
-        setIsSubmitted(false);
-      }, 3000);
+
+      setFormData({ name: '', email: '', phone: '', service: '', message: '', website: '' });
+      setErrors({});
+
+      setTimeout(() => setIsSubmitted(false), 3000);
+    } catch (err) {
+      setSubmitError('Bağlantı hatası. Lütfen tekrar deneyin.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -75,12 +118,8 @@ export function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Projeniz İçin İlk Adımı Atın
-          </h2>
-          <p className="text-gray-400 text-lg">
-            Formu doldurun, size en kısa sürede dönüş yapalım
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">Projeniz İçin İlk Adımı Atın</h2>
+          <p className="text-gray-400 text-lg">Formu doldurun, size en kısa sürede dönüş yapalım</p>
         </motion.div>
 
         <motion.div
@@ -98,12 +137,13 @@ export function Contact() {
             >
               <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
               <h3 className="text-2xl font-semibold mb-2">Teşekkürler!</h3>
-              <p className="text-gray-400">
-                Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.
-              </p>
+              <p className="text-gray-400">Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.</p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-2xl"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -132,6 +172,7 @@ export function Contact() {
                     </motion.p>
                   )}
                 </div>
+
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
                     E-posta <span className="text-red-400">*</span>
@@ -203,11 +244,21 @@ export function Contact() {
                     : 'border-white/10 focus:border-blue-500 focus:ring-blue-500/50'
                     } ${!formData.service ? 'text-gray-500' : ''}`}
                 >
-                  <option value="" className="bg-[#0a0e1a]">Hizmet Seçiniz</option>
-                  <option value="web-design" className="bg-[#0a0e1a] text-white">Web Tasarım</option>
-                  <option value="web-development" className="bg-[#0a0e1a] text-white">Web Geliştirme</option>
-                  <option value="ecommerce" className="bg-[#0a0e1a] text-white">E-Ticaret</option>
-                  <option value="seo" className="bg-[#0a0e1a] text-white">SEO & Optimizasyon</option>
+                  <option value="" className="bg-[#0a0e1a]">
+                    Hizmet Seçiniz
+                  </option>
+                  <option value="web-design" className="bg-[#0a0e1a] text-white">
+                    Web Tasarım
+                  </option>
+                  <option value="web-development" className="bg-[#0a0e1a] text-white">
+                    Web Geliştirme
+                  </option>
+                  <option value="ecommerce" className="bg-[#0a0e1a] text-white">
+                    E-Ticaret
+                  </option>
+                  <option value="seo" className="bg-[#0a0e1a] text-white">
+                    SEO & Optimizasyon
+                  </option>
                 </select>
                 {errors.service && (
                   <motion.p
@@ -249,13 +300,38 @@ export function Contact() {
                 )}
               </div>
 
+              {/* Submit-level error */}
+              {submitError && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-red-400 text-sm mb-4 flex items-center gap-2"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {submitError}
+                </motion.p>
+              )}
+
+              {/* Honeypot (botlar doldurur, insanlar görmez) */}
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+              />
+
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-linear-to-r cursor-pointer from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group"
+                disabled={isLoading}
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                className={`w-full bg-linear-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'
+                  }`}
               >
-                <span>Teklif İste</span>
+                <span>{isLoading ? 'Gönderiliyor...' : 'Teklif İste'}</span>
                 <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </form>
