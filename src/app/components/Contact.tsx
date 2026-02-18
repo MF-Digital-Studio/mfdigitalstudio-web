@@ -255,7 +255,7 @@ export function Contact() {
                 whileTap={{ scale: 0.98 }}
                 className="w-full bg-linear-to-r cursor-pointer from-blue-600 to-purple-600 text-white px-6 py-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group"
               >
-                <span>Gönder</span>
+                <span>Teklif İste</span>
                 <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </form>

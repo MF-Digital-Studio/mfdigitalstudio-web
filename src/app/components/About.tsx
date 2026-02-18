@@ -1,51 +1,45 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { MessageSquare, DollarSign, Handshake, ChevronDown } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Target, Clock, Zap, TrendingUp, ArrowRight } from 'lucide-react';
 
 export function About() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const items = [
+  const valueBlocks = [
     {
-      icon: MessageSquare,
-      title: "Hızlı ve Net Süreç Yönetimi",
-      subtitle: "Projelerimizi planlı, ölçülebilir ve raporlanabilir şekilde yönetiyoruz.",
-      description: "İş dünyasında zamanın kritik olduğunu biliyoruz. Bu yüzden sizi hiçbir aşamada belirsizlik içinde bırakmıyoruz.",
-      details: [
-        "Tüm taleplere 24 saat içinde yanıt garantisi",
-        "Haftalık ilerleme raporu",
-        "Süreç boyunca tam şeffaflık"
-      ]
+      id: 1,
+      icon: Target,
+      title: "Stratejik Yaklaşım",
+      description: "Tasarıma başlamadan önce markanızı, hedeflerinizi ve müşterilerinizi derinlemesine analiz ederiz. Doğru strateji olmadan hiçbir tasarım başarılı olamaz. Sağlam bir foundation yaratarak uzun vadeli başarınızın temelini atarız.",
+      color: "from-blue-500/20 to-blue-600/20"
     },
     {
-      icon: DollarSign,
-      title: "Net & Şeffaf Fiyatlandırma",
-      subtitle: "Net kapsam ve anlaşılır fiyat teklifleri.",
-      description: "Projenin kapsamını baştan netleştirir, sürpriz maliyetlere yer bırakmayız. Bütçenize uygun, ölçeklenebilir çözümler sunarız.",
-      details: [
-        "Sabit proje teklifi",
-        "Gizli maliyet yok",
-        "Net teslim takvimi",
-        "Ölçeklenebilir paketler"
-      ]
+      id: 2,
+      icon: Clock,
+      title: "Şeffaf ve Planlı Süreç",
+      description: "Net teslim tarihleri, haftalık bilgilendirme raporları ve sürpriz maliyet yok. Projenin her aşamasında tam kontrole sahipsiniz. Belirsizlik yerine berraklık sunarak işinize odaklanabilmenizi garantiliyoruz.",
+      color: "from-purple-500/20 to-purple-600/20"
     },
     {
-      icon: Handshake,
+      id: 3,
+      icon: Zap,
+      title: "Modern ve Ölçeklenebilir Çözümler",
+      description: "SEO uyumlu yapı, yıldırım hızı ve performans optimizasyonu. Günümüzün web standartlarının en iyisini uyguluyoruz. Markanız büyüdükçe sisteminiz de sorunsuz şekilde ölçeklenmeye hazır olur.",
+      color: "from-pink-500/20 to-pink-600/20"
+    },
+    {
+      id: 4,
+      icon: TrendingUp,
       title: "Uzun Vadeli İş Ortaklığı",
-      subtitle: "İlk projenizden sonra da işinizin gelişimine destek oluyoruz.",
-      description: "Projenin teslimi bizim için bitiş değil, başlangıçtır. Markanız büyüdükçe altyapınız da büyümeye hazır olur.",
-      details: [
-        "Yayın sonrası destek",
-        "Performans ve bakım",
-        "Sürekli geliştirme imkanı",
-        "Uzun vadeli iş birliği"
-      ]
+      description: "Proje teslimi bizim için bitiş değil, başlangıçtır. Yayın sonrası destek, performans takibi ve stratejik danışmanlık ile markanızın büyümesine eşlik ederiz. Başarınız, bizim referansımızdır.",
+      color: "from-green-500/20 to-green-600/20"
     }
   ];
 
   return (
-    <section id="hakkimizda" className="py-24 relative">
-      <div className="container mx-auto px-6">
+    <section id="hakkimizda" className="py-24 relative overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none" />
+
+      <div className="container mx-auto px-6 relative">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,85 +48,105 @@ export function About() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Neden Biz?
+            Neden MF Digital Studio?
           </h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            Projelerinizi sadece tasarlamıyor, markanıza gerçek değer katıyoruz.
+          </p>
         </motion.div>
 
-        <div className="max-w-4xl mx-auto space-y-4">
-          {items.map((item, index) => {
-            const Icon = item.icon;
-            const isOpen = openIndex === index;
+        {/* Value Blocks Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 max-w-6xl mx-auto">
+          {valueBlocks.map((block, index) => {
+            const Icon = block.icon;
 
             return (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
+                key={block.id}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.12 }}
+                className="group relative"
               >
-                <div
-                  className={`bg-white/5 backdrop-blur-sm border rounded-xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-blue-500/50 bg-white/10' : 'border-white/10'
-                    }`}
-                >
-                  <button
-                    onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="w-full p-6 flex items-start gap-4 text-left hover:bg-white/5 transition-colors cursor-pointer"
-                  >
-                    <div className={`flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${isOpen ? 'bg-blue-500/20' : 'bg-white/10'
-                      }`}>
-                      <Icon className={`w-6 h-6 transition-colors ${isOpen ? 'text-blue-400' : 'text-gray-400'
-                        }`} />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
-                      <p className="text-gray-400 text-sm">{item.subtitle}</p>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: isOpen ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="flex-shrink-0"
-                    >
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
-                    </motion.div>
-                  </button>
+                {/* Card glow effect on hover */}
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${block.color} rounded-2xl opacity-0 group-hover:opacity-60 blur-xl transition-opacity duration-500 pointer-events-none`} />
 
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-6 pb-6 pl-[88px]">
-                          <p className="text-gray-300 mb-4 leading-relaxed">
-                            {item.description}
-                          </p>
-                          <ul className="space-y-2">
-                            {item.details.map((detail, idx) => (
-                              <motion.li
-                                key={idx}
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.3, delay: idx * 0.1 }}
-                                className="flex items-start gap-2"
-                              >
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
-                                <span className="text-gray-400 text-sm">{detail}</span>
-                              </motion.li>
-                            ))}
-                          </ul>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 h-full group-hover:bg-white/8 group-hover:border-white/20 transition-all duration-300">
+                  {/* Icon */}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className={`w-14 h-14 rounded-xl bg-gradient-to-br ${block.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                  >
+                    <Icon className="w-7 h-7 text-white" />
+                  </motion.div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-blue-300 transition-colors">
+                    {block.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-300 leading-relaxed text-base">
+                    {block.description}
+                  </p>
+
+                  {/* Bottom accent line */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </motion.div>
             );
           })}
         </div>
+
+        {/* CTA Strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="relative"
+        >
+          {/* CTA Strip background glow */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
+
+          <div className="relative bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-12">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+              {/* Text Content */}
+              <div className="flex-1">
+                <h3 className="text-2xl md:text-3xl font-bold mb-2">
+                  Markanızı Bir Üst Seviyeye Taşımaya Hazır Mısınız?
+                </h3>
+                <p className="text-gray-400 text-lg">
+                  İlk adımı atın ve markanızın potansiyelini ortaya çıkarın.
+                </p>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                <motion.a
+                  href="#iletisim"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group/btn inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/50 whitespace-nowrap"
+                >
+                  Ücretsiz Keşif Görüşmesi
+                  <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                </motion.a>
+
+                <motion.a
+                  href="#projeler"
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center justify-center gap-2 border-2 border-white/20 hover:border-white/40 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:bg-white/5 whitespace-nowrap"
+                >
+                  Projelerimizi İncele
+                </motion.a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

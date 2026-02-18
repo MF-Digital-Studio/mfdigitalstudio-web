@@ -6,12 +6,56 @@
 }
 
 @layer base {
+
+  /* Smooth scrolling behavior with offset for sticky header */
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    /* Account for sticky header */
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
+  }
+
+  /* Improve readability on dark backgrounds */
+  p,
+  li,
+  td {
+    line-height: 1.6;
+  }
+
+  /* Dark mode contrast improvements */
+  .text-gray-400 {
+    /* Improve from #9CA3AF to better contrast */
+    @apply text-gray-300 dark:text-gray-400;
+  }
+
+  /* Focus states for better keyboard navigation */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  /* Smooth transitions */
+  * {
+    @apply transition-colors duration-200;
+  }
+
+  /* Improve font rendering in dark mode */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Ensure images don't overflow on mobile */
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }

@@ -46,7 +46,7 @@ export function NeedHelp() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {options.map((option, index) => {
             const Icon = option.icon;
-            
+
             return (
               <motion.div
                 key={index}

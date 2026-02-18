@@ -103,7 +103,7 @@ export function Services() {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Markanıza Bir Kat Seçenek Taşıyan Hizmetler
+            Markanızı Bir Üst Seviyeye Taşıyan Hizmetler
           </h2>
 
           {/* UPDATED: subtitle copy */}

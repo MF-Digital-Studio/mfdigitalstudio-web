@@ -8,28 +8,28 @@ export function Standards() {
       icon: Compass,
       title: "Keşif & Strateji",
       description: "Markanızı, hedef kitlenizi ve iş modelinizi analiz ederek projeye sağlam bir temel oluşturuyoruz. Doğru strateji, güçlü sonucun anahtarıdır.",
-      features: ["Research", "Brand Strategy", "Planning"]
+      features: ["Araştırma", "Marka Stratejisi", "Planlama"]
     },
     {
       number: "02",
       icon: Palette,
       title: "Tasarım & Deneyim",
       description: "Kullanıcı odaklı, modern ve estetik arayüzler tasarlıyoruz. Her piksel, dönüşüm ve marka algısı için optimize edilir.",
-      features: ["Unique Design", "User Experience", "Brand Identity"]
+      features: ["Özgün Tasarım", "Kullanıcı Deneyimi", "Marka Kimliği"]
     },
     {
       number: "03",
       icon: Code2,
       title: "Geliştirme & Performans",
       description: "Temiz, ölçeklenebilir ve sürdürülebilir kod yapısıyla projeyi geliştiriyoruz. Hız, güvenlik ve teknik kalite önceliğimizdir.",
-      features: ["Clean Code", "Scalable Architecture", "Performance"]
+      features: ["Temiz Kod", "Ölçeklenebilir Mimari", "Performans"]
     },
     {
       number: "04",
       icon: Rocket,
       title: "Yayın & Süreklilik",
       description: "Projeyi sorunsuz şekilde yayına alıyor, bakım ve teknik destekle uzun vadeli iş ortaklığı sağlıyoruz.",
-      features: ["Deployment", "Maintenance", "Support"]
+      features: ["Yayınlama", "Bakım", "Destek"]
     }
   ];
 

@@ -44,6 +44,16 @@ export function Hero() {
           Web Siteleri İnşa Ediyoruz
         </motion.h1>
 
+        {/* Value Proposition Line */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-blue-400 font-medium text-lg mb-6 max-w-3xl mx-auto"
+        >
+          Hızlı yükleme, SEO dostu, dönüşüm optimasyonlu ve baştan sona profesyonel çözümler.
+        </motion.p>
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,32 +84,6 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mt-20"
-        >
-          {[
-            { value: 'Hız', label: '3–7 Gün Teslim' },
-            { value: 'Stack', label: 'Next.js & SEO-Ready' },
-            { value: '24/7', label: 'Teknik Destek' }
-          ].map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                {stat.value}
-              </div>
-              <div className="text-gray-400 text-sm mt-1">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
