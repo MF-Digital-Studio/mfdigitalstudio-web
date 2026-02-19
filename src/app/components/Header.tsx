@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import logo from "../assets/logo.svg";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hizmetler");
+  const navigate = useNavigate();
 
   // Scrollspy: Monitor which section is in view
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["hizmetler", "projeler", "hakkimizda", "iletisim"];
+      const sections = ["hizmetler", "projeler", "hakkimizda", "iletisim-form"];
 
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -32,15 +34,19 @@ export function Header() {
     { id: "hizmetler", label: "Hizmetler" },
     { id: "projeler", label: "Projeler" },
     { id: "hakkimizda", label: "Hakkımızda" },
-    { id: "iletisim", label: "İletişim" }
+    { id: "iletisim-form", label: "İletişim" }
   ];
+
+  const goToSection = (id: string) => {
+    navigate(`/#${id}`);
+  };
 
   return (
     <>
       {/* Skip to Content Link - for accessibility */}
       <a
         href="#main-content"
-        className="fixed top-4 left-4 z-[60] px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md opacity-0 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-300 -translate-y-20 focus:translate-y-0 transition-all"
+        className="fixed top-4 left-4 z-[60] px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md opacity-0 focus:opacity-100 focus:outline-none -translate-y-20 focus:translate-y-0 transition-all"
       >
         Ana İçeriğe Atla
       </a>
@@ -52,21 +58,26 @@ export function Header() {
         className="fixed top-0 left-0 right-0 z-50 bg-[#0a0e1a]/80 backdrop-blur-md border-b border-white/5"
       >
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-lg">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 focus:outline-none rounded-lg cursor-pointer"
+          >
             <motion.div>
               <img src={logo} className="w-16 h-auto" alt="MF Digital Studio Logo" />
             </motion.div>
-          </a>
+          </button>
 
           <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
             {navLinks.map((link) => (
-              <a
+              <button
+                type="button"
                 key={link.id}
-                href={`#${link.id}`}
-                className={`relative text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-2 py-1 ${activeSection === link.id
-                    ? "text-white font-medium"
-                    : "text-gray-400 hover:text-white"
+                className={`relative text-sm transition-colors focus:outline-none rounded px-2 py-1 cursor-pointer ${activeSection === link.id
+                  ? "text-white font-medium"
+                  : "text-gray-400 hover:text-white"
                   }`}
+                onClick={() => goToSection(link.id)}
               >
                 {link.label}
                 {/* Active indicator */}
@@ -77,22 +88,23 @@ export function Header() {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-              </a>
+              </button>
             ))}
           </nav>
 
           <div className="flex items-center gap-4">
-            <motion.a
-              href="#iletisim"
+            <motion.button
+              type="button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-white text-[#0a0e1a] px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors inline-block focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0a0e1a]"
+              className="bg-white text-[#0a0e1a] px-5 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors inline-block focus:outline-none cursor-pointer"
+              onClick={() => goToSection("iletisim")}
             >
               İletişime Geç
-            </motion.a>
+            </motion.button>
 
             <button
-              className="md:hidden text-white focus:outline-none focus:ring-2 focus:ring-blue-400 rounded p-1"
+              className="md:hidden text-white focus:outline-none rounded p-1 cursor-pointer"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
               aria-expanded={isMenuOpen}
@@ -138,17 +150,20 @@ export function Header() {
             >
               <nav className="container mx-auto px-6 py-4 flex flex-col gap-4" aria-label="Mobile navigation">
                 {navLinks.map((link) => (
-                  <a
+                  <button
+                    type="button"
                     key={link.id}
-                    href={`#${link.id}`}
-                    className={`text-sm py-2 px-3 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 ${activeSection === link.id
-                        ? "text-white font-medium bg-white/5"
-                        : "text-gray-400 hover:text-white"
+                    className={`text-sm py-2 px-3 rounded transition-colors focus:outline-none cursor-pointer ${activeSection === link.id
+                      ? "text-white font-medium bg-white/5"
+                      : "text-gray-400 hover:text-white"
                       }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      goToSection(link.id);
+                      setIsMenuOpen(false);
+                    }}
                   >
                     {link.label}
-                  </a>
+                  </button>
                 ))}
               </nav>
             </motion.div>

@@ -111,11 +111,12 @@ export function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Projeniz İçin İlk Adımı Atın</h2>
+          <h2 id='iletisim-form' className="text-4xl md:text-5xl font-bold mb-4">Projeniz İçin İlk Adımı Atın</h2>
           <p className="text-gray-400 text-lg">Formu doldurun, size en kısa sürede dönüş yapalım</p>
         </motion.div>
 
         <motion.div
+
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
