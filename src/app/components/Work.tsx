@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { caseStudies } from '../config/caseStudies';
+import { PerformanceRing } from './PerformanceRing';
 
 export function Work() {
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   return (
     <section id="projeler" className="py-24 relative overflow-hidden">
       {/* Background effects */}
@@ -26,13 +29,18 @@ export function Work() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {caseStudies.map((project, index) => (
-            <motion.div
+            <motion.a
               key={project.id}
+              href={project.liveUrl || '#'}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.15 }}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer block"
+              onMouseEnter={() => setHoveredCardId(project.id)}
+              onMouseLeave={() => setHoveredCardId(null)}
             >
               {/* Card glow */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500" />
@@ -79,9 +87,27 @@ export function Work() {
                 <div className="p-6 flex-grow flex flex-col">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="text-blue-400 text-sm font-medium">{project.category}</div>
-                    <div className="w-1 h-1 rounded-full bg-gray-600" />
-                    <div className="text-gray-500 text-xs">Performance: {project.metrics.speed}/100</div>
+                    {/* <div className="w-1 h-1 rounded-full bg-gray-600" /> */}
+                    <div className="flex items-center gap-3">
+                      <PerformanceRing
+                        value={project.metrics.speedScore}
+                        size={32}
+                        strokeWidth={3}
+                        active={hoveredCardId === project.id}
+                        label="Performance"
+                      />
+                      {project.metrics.seoScore !== undefined && (
+                        <PerformanceRing
+                          value={project.metrics.seoScore}
+                          size={32}
+                          strokeWidth={3}
+                          active={hoveredCardId === project.id}
+                          label="SEO"
+                        />
+                      )}
+                    </div>
                   </div>
+                  
 
                   <h3 className="text-xl font-semibold mb-1 group-hover:text-blue-400 transition-colors">
                     {project.title}
@@ -112,19 +138,14 @@ export function Work() {
                     </div>
                   )}
 
-                  {/* Metrics */}
-                  <div className="flex items-center gap-4 pt-4 border-t border-white/10 mt-auto">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-green-500" />
-                      <span className="text-xs text-gray-400">Active Users: {project.metrics.users}</span>
-                    </div>
-                  </div>
+
+
                 </div>
 
                 {/* Bottom accent line */}
                 <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            </motion.div>
+            </motion.a>
           ))}
         </div>
 

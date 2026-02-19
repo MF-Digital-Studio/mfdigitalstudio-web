@@ -1,3 +1,8 @@
+import corporate from "../assets/projects/corporate.png";
+import cafe from "../assets/projects/cafe.png";
+import fineDining from "../assets/projects/fine-dining.png";
+
+
 export interface CaseStudy {
     id: string;
     title: string;
@@ -8,8 +13,12 @@ export interface CaseStudy {
     tags: string[];
     metrics: {
         speed: string;
-        users: string;
+        speedScore?: number;
+        seo?: string;
+        seoScore?: number;
     };
+    liveUrl?: string;
+    isDemo?: boolean;
     problem?: string;
     approach?: string;
     solution?: string;
@@ -27,79 +36,81 @@ export interface CaseStudy {
 }
 
 export const caseStudies: CaseStudy[] = [
+
     {
         id: "1",
-        title: "Sağlık Platformu",
-        subtitle: "Hastane Randevu Sistemi",
-        category: "Sağlık Sektörü",
-        description: "Hasta kayıt, randevu yönetimi ve online ödeme entegrasyonlu modern sağlık platformu.",
-        image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&auto=format&q=70",
-        tags: ["Web App", "Payment", "CRM"],
-        metrics: { speed: "98", users: "10K+" },
-        problem: "Hastanelerin manuel randevu sistemleri zaman alıcı, hatalara açık ve hasta memnuniyetini azaltıyordu. Dijital transformasyon şarttı.",
-        approach: "Müşteri ihtiyaçlarını detaylı analiz ederek, hasta ve doktor arayüzü ayrı tasarladık. Entegre ödeme ve SMS bildirimleri ekledik.",
-        solution: "Tam fonksiyonel randevu sistemi, gerçek zamanlı slot yönetimi, online ödeme, otomatik hatırlatıcılar ve detaylı raporlama.",
-        techStack: ["React", "Node.js", "PostgreSQL", "Stripe API", "Twilio"],
+        title: "Kafe Web Sitesi (Demo)",
+        subtitle: "Menü + lokasyon + rezervasyon odaklı",
+        category: "Yeme-İçme",
+        description: "Kafe için hızlı açılan, menü odaklı ve Google harita/iletişim bilgileri net olan demo site.",
+        image: cafe,
+        tags: ["Kafe", "Menü", "Mobil"],
+        metrics: { speed: "95+", speedScore: 95, seo: "91+", seoScore: 91 },
+        problem: "Kafelerin çoğu sitesinde menüye ulaşmak zor, mobilde okuması güç ve lokasyon/iletişim bilgisi yeterince görünür değil.",
+        approach: "Menüyü ana akışa aldık. CTA olarak 'Yol Tarifi' ve 'Rezervasyon' aksiyonlarını öne çıkardık.",
+        solution: "Mobil öncelikli tasarım, menü bölümü, harita bağlantısı, tek tıkla arama/WhatsApp ve kolay rezervasyon akışı.",
+        techStack: ["Vite", "React", "TailwindCSS"],
+        servicesUsed: ["Web Tasarım", "Menü Tasarımı", "Yerel SEO Temelleri"],
         results: [
-            { metric: "Randevu işleme süresi", value: "30 sn", improvement: "-80% karşılık önceki 2-3 saat" },
-            { metric: "Hasta memnuniyeti", value: "4.8/5", improvement: "Yeni sistem sayesinde" },
-            { metric: "Operasyonel maliyet", value: "-40%", improvement: "İş yükü azalması ile" },
-            { metric: "Aktif kullanıcı", value: "10.000+", improvement: "İlk 6 ayda" }
+            { metric: "Menü erişimi", value: "1 tık", improvement: "Mobil kullanıcı için" },
+            { metric: "Navigasyon", value: "Hızlı akış", improvement: "Basit bilgi mimarisi" }
         ],
-        servicesUsed: ["Web Uygulaması", "API Entegrasyonu", "Veri Bazı Tasarımı"],
         beforeAfter: {
-            before: "Telefon + Excel tabanlı randevu yönetimi",
-            after: "Otomatik, ölçeklenebilir dijital platform"
-        }
+            before: "Menü gizli, lokasyon belirsiz, mobil zor okunur",
+            after: "Menü ve lokasyon görünür, mobilde kolay kullanım"
+        },
+        isDemo: true,
+        liveUrl: "https://mf-cafe-landing.vercel.app/"
     },
     {
         id: "2",
-        title: "E-Ticaret Çözümü",
-        subtitle: "Çok Kanallı Satış Platformu",
-        category: "E-Ticaret",
-        description: "SEO optimize, hızlı yükleme süreleri ve mobil öncelikli tasarım ile modern e-ticaret deneyimi.",
-        image: "https://images.unsplash.com/photo-1661956602116-aa6865609028?w=500&auto=format&q=70",
-        tags: ["E-Commerce", "SEO", "Analytics"],
-        metrics: { speed: "95", users: "25K+" },
-        problem: "Eski e-ticaret platformu yavaş, SEO sıralamaları düşük ve mobil deneyim kötüydü. Satışlar stagnasyondaydı.",
-        approach: "Teknik SEO odaklı migreeyonu planladık, sayfa hızını iyileştirdik ve modern frontend mimarisine geçtik.",
-        solution: "Yeni Next.js tabanlı platform, image optimizasyonu, lazy loading, structured data, ve sitemap/robots.txt optimizasyonu.",
-        techStack: ["Next.js", "Shopify API", "Algolia Search", "Cloudinary", "Analytics 4"],
+        title: "Lüks Restoran Sitesi (Demo)",
+        subtitle: "Premium görsel dil + rezervasyon CTA",
+        category: "Fine Dining",
+        description: "Premium algı yaratan görsel dil, şef imzası ve rezervasyon odaklı akışa sahip lüks restoran demo sitesi.",
+        image: fineDining,
+        tags: ["Restoran", "Premium", "Branding"],
+        metrics: { speed: "90+", speedScore: 90, seo: "91+", seoScore: 91 },
+        problem: "Lüks restoranlarda en kritik nokta güven ve 'premium algı'. Ancak birçok sitede görsel dil ve içerik bunu desteklemiyor.",
+        approach: "Minimal tipografi, güçlü görseller, net menü/şef hikayesi ve belirgin rezervasyon CTA’ları ile premium bir akış tasarladık.",
+        solution: "Hero + imza yemekler + menü özeti + konsept/şef + rezervasyon CTA + iletişim akışı.",
+        techStack: ["Vite", "React", "TailwindCSS"],
+        servicesUsed: ["Web Tasarım", "Marka Dili", "CTA / Rezervasyon Akışı"],
         results: [
-            { metric: "Sayfa yüklenme hızı", value: "1.2 sn", improvement: "-75% önceki 4+ sn'den" },
-            { metric: "Google sıralaması", value: "Top 3 для 120+ keywords", improvement: "+200% traffic" },
-            { metric: "Dönüşüm oranı", value: "+45%", improvement: "Hız + UX iyileştirmesi" },
-            { metric: "Mobil satışlar", value: "+60%", improvement: "Responsive tasarımdan" }
+            { metric: "Premium algı", value: "Yüksek", improvement: "Minimal tasarım + görsel dil" },
+            { metric: "Rezervasyon odağı", value: "Net CTA", improvement: "Tek hedef akış" }
         ],
-        servicesUsed: ["E-Ticaret Platformu", "SEO Optimizasyonu", "Performans Tuning"],
         beforeAfter: {
-            before: "Ağır, yavaş, SEO-unfriendly platform",
-            after: "Hızlı, optimize, arama motoru dostu modern site"
-        }
+            before: "Standart şablon, zayıf premium algı",
+            after: "Premium görünüm, rezervasyon odaklı deneyim"
+        },
+        isDemo: true,
+        liveUrl: "https://mf-fine-dining.vercel.app/"
     },
     {
         id: "3",
-        title: "Kurumsal Web Sitesi",
-        subtitle: "Dijital Ajans Portfolyosu",
-        category: "Dijital Pazarlama",
-        description: "Modern tasarım dili, interaktif animasyonlar ve güçlü içerik yönetim sistemi.",
-        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&auto=format&q=70",
-        tags: ["Corporate", "CMS", "Portfolio"],
-        metrics: { speed: "96", users: "5K+" },
-        problem: "Eski kurumsal site tarihi görünüyor, içerik yönetimi zor ve lead capture sistemi yoktu.",
-        approach: "Premium tasarım kütüphanesi oluşturduk, interaktif animasyonlar ekledik ve headless CMS entegre ettik.",
-        solution: "Fully custom React + Framer Motion animasyonlar, Sanity CMS backend, email automation, ve analytics tracking.",
-        techStack: ["React", "Sanity CMS", "Framer Motion", "TailwindCSS", "Vercel"],
+        title: "Kurumsal Tanıtım Sitesi (Demo)",
+        subtitle: "Modern landing + hizmet odaklı yapı",
+        category: "Kurumsal",
+        description: "Lead odaklı, hızlı ve mobil uyumlu kurumsal demo site. Net hizmet anlatımı ve güçlü CTA yapısı.",
+        image: corporate,
+        tags: ["Kurumsal", "Landing", "UI/UX"],
+        metrics: { speed: "95+", speedScore: 95, seo: "91+", seoScore: 91 },
+        problem: "Birçok kurumsal sitede mesaj net değil, CTA zayıf ve içerik dağınık olduğu için ziyaretçi dönüşümü düşük kalıyor.",
+        approach: "Net bir bilgi mimarisi kurguladık: hero + değer önerisi + hizmetler + süreç + iletişim. İçerik kısa, taranabilir ve CTA odaklı.",
+        solution: "Tek sayfa akış, dikkat dağıtmayan tasarım, form entegrasyonu ve dönüşüm odaklı CTA’lar.",
+        techStack: ["Vite", "React", "TailwindCSS"],
+        servicesUsed: ["Web Tasarım", "Web Geliştirme", "Dönüşüm Optimizasyonu"],
         results: [
-            { metric: "Lead generasyon", value: "+200%", improvement: "CTA optimizasyonundan" },
-            { metric: "Ortalama oturum süresi", value: "4:32", improvement: "İlgi çekici içerik sayesinde" },
-            { metric: "Brand arama", value: "+150%", improvement: "Tasarım ile fark yapması" },
-            { metric: "İçerik güncelleme süresi", value: "5 dk", improvement: "CMS sayesinde" }
+            { metric: "Sayfa hızı hedefi", value: "95+ Lighthouse", improvement: "Performans odaklı yapı" },
+            { metric: "Mobil uyumluluk", value: "Tam uyum", improvement: "Responsive tasarım" }
         ],
-        servicesUsed: ["Web Tasarımı", "CMS İntegrasyonu", "Animasyon"],
         beforeAfter: {
-            before: "Statik HTML, sıkıcı tasarım, güncelleme zorluğu",
-            after: "Dinamik, modern, animasyonlu, kolay yönetilir sistem"
-        }
+            before: "Dağınık içerik, zayıf CTA, düşük güven hissi",
+            after: "Net mesaj, güçlü CTA, modern görünüm"
+        },
+        isDemo: true,
+        liveUrl: "https://mf-corporate-landing.vercel.app/"
     }
+
 ];

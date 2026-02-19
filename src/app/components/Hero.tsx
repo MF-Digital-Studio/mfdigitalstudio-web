@@ -1,7 +1,59 @@
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export function Hero() {
+  const prefixText = 'Markanızı Büyüten ';
+  const highlightText = 'Yüksek Performanslı';
+  const suffixText = ' Web Siteleri İnşa Ediyoruz';
+
+  const fullTextLength = useMemo(
+    () => prefixText.length + highlightText.length + suffixText.length,
+    [prefixText.length, highlightText.length, suffixText.length]
+  );
+
+  const [typedCount, setTypedCount] = useState(0);
+  const [typingDone, setTypingDone] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      setTypedCount(fullTextLength);
+      setTypingDone(true);
+      return;
+    }
+
+    setTypedCount(0);
+    setTypingDone(false);
+
+    const tickMs = 24;
+    const intervalId = window.setInterval(() => {
+      setTypedCount((prev) => {
+        const next = Math.min(prev + 1, fullTextLength);
+        if (next === fullTextLength) {
+          window.clearInterval(intervalId);
+          setTypingDone(true);
+        }
+        return next;
+      });
+    }, tickMs);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [fullTextLength]);
+
+  const prefixVisible = prefixText.slice(0, Math.min(typedCount, prefixText.length));
+  const highlightStart = prefixText.length;
+  const highlightCount = Math.max(0, Math.min(typedCount - highlightStart, highlightText.length));
+  const highlightVisible = highlightText.slice(0, highlightCount);
+  const suffixStart = prefixText.length + highlightText.length;
+  const suffixCount = Math.max(0, Math.min(typedCount - suffixStart, suffixText.length));
+  const suffixVisible = suffixText.slice(0, suffixCount);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background gradient blur effect */}
@@ -37,11 +89,21 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight max-w-5xl mx-auto"
         >
-          Markanızı Büyüten{' '}
+          {prefixVisible}
           <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Yüksek Performanslı
-          </span>{' '}
-          Web Siteleri İnşa Ediyoruz
+            {highlightVisible}
+          </span>
+          {suffixVisible}
+          {typingDone && (
+            <motion.span
+              className="inline-block align-baseline"
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+              aria-hidden="true"
+            >
+              |
+            </motion.span>
+          )}
         </motion.h1>
 
         {/* Value Proposition Line */}
