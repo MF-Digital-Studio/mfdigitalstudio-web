@@ -8,6 +8,7 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { ScrollToTop } from "./components/ScrollToTop";
 import logo from "./assets/logo.svg";
+import { Analytics } from "@vercel/analytics/next"
 
 function ScrollToHash() {
   const location = useLocation();
@@ -105,6 +106,7 @@ export default function App() {
         <Footer />
         <ScrollToTop />
       </div>
+      <Analytics />
     </BrowserRouter>
   );
 }
