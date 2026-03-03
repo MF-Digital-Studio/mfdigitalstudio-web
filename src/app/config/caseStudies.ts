@@ -1,6 +1,7 @@
 import corporate from "../assets/projects/corporate.png";
 import cafe from "../assets/projects/cafe.png";
 import fineDining from "../assets/projects/fine-dining.png";
+import gayrimenkul from "../assets/projects/gayrimenkul.png"
 
 
 export interface CaseStudy {
@@ -39,6 +40,42 @@ export const caseStudies: CaseStudy[] = [
 
     {
         id: "1",
+        title: "Gayrimenkul Web Sitesi (Demo)",
+        subtitle: "Portföy + filtreleme + ilan detay + güçlü CTA",
+        category: "Gayrimenkul • Emlak",
+        description: "Modern emlak ofisleri için mobil öncelikli, güven veren ve dönüşüm odaklı web deneyimi.",
+        image: gayrimenkul, // sizdeki görsel değişken adı neyse onu kullanın
+        tags: ["Emlak", "Portföy", "Filtreleme", "Mobile-first"],
+        metrics: { speed: "95+", speedScore: 95, seo: "91+", seoScore: 91 },
+
+        problem:
+            "Birçok emlak sitesinde ilanlar karışık sunuluyor, filtreleme yetersiz kalıyor ve güven algısı zayıf olduğu için ziyaretçiler iletişime geçmeden çıkıyor.",
+
+        approach:
+            "Kullanıcının aradığı ilana hızlı ulaşmasını sağlayan sade filtreleme kurguladık. Büyük görseller, net fiyat/özellik alanı ve WhatsApp/Arama CTA’larını görünür konumlandırdık.",
+
+        solution:
+            "Filtrelenebilir portföy sayfası, ilan detay sayfası, yatırım odaklı içerik düzeni ve mobil uyumlu hızlı bir arayüz ile lead toplamayı kolaylaştıran modern emlak sitesi.",
+
+        techStack: ["Vite", "React", "TailwindCSS"],
+        servicesUsed: ["Web Tasarım", "Web Geliştirme", "Dönüşüm Optimizasyonu", "Yerel SEO Temelleri"],
+
+        results: [
+            { metric: "İlan keşfi", value: "2-3 tık", improvement: "Filtreleme ile hızlı erişim" },
+            { metric: "Mobil deneyim", value: "Tam uyum", improvement: "Mobile-first tasarım" },
+            { metric: "İletişim aksiyonu", value: "Net CTA", improvement: "Ara / WhatsApp odaklı akış" }
+        ],
+
+        beforeAfter: {
+            before: "Karışık ilan sunumu, zayıf güven algısı, mobilde düşük okunabilirlik",
+            after: "Düzenli portföy, güçlü marka algısı, hızlı ve mobil uyumlu deneyim"
+        },
+
+        isDemo: true,
+        liveUrl: "https://gayrimenkul-demo.vercel.app/"
+    },
+    {
+        id: "2",
         title: "Kafe Web Sitesi (Demo)",
         subtitle: "Menü + lokasyon + rezervasyon odaklı",
         category: "Yeme-İçme",
@@ -63,7 +100,7 @@ export const caseStudies: CaseStudy[] = [
         liveUrl: "https://mf-cafe-landing.vercel.app/"
     },
     {
-        id: "2",
+        id: "3",
         title: "Lüks Restoran Sitesi (Demo)",
         subtitle: "Premium görsel dil + rezervasyon CTA",
         category: "Fine Dining",
@@ -88,7 +125,7 @@ export const caseStudies: CaseStudy[] = [
         liveUrl: "https://mf-fine-dining.vercel.app/"
     },
     {
-        id: "3",
+        id: "4",
         title: "Kurumsal Tanıtım Sitesi (Demo)",
         subtitle: "Modern landing + hizmet odaklı yapı",
         category: "Kurumsal",
